@@ -1,6 +1,14 @@
 ### Iteratively subset GPA, covariates, and PC scores for each clade into own matrix ###
 SubsettingGMM <- function(X,A,PCData,W,group,print.plot=FALSE)
 {
+
+  # X is a data.frame of covariate data
+  # A is a shape dataset output from gpagen
+  # PCData is a shape PCA dataset output from geomorph::gm.prcomp()
+  # W is a dataset of plotting values (output from PlottingValues)
+  # group is a character string that identifies the covariate to create subgroups
+  
+  #create lists for data to be subset
   GPAList=list()
   CovariatesList=list()
   SpeciesList=list()
@@ -12,17 +20,17 @@ SubsettingGMM <- function(X,A,PCData,W,group,print.plot=FALSE)
   Legendcolors=c()
   Legendshapes=c()
   Taxa=list()
-
-  #PC1 vs. PC2#
+  
+  PC_VarList <- summary(PCData)$PC.summary[2,]
 
   #make x and y axis labels with % variance on them
-  x_lab <- paste("Principal Component 1", " (", round(PCData$pc.summary$importance[2,1]*100, 1), "%)", sep="")
-  y_lab <- paste("Principal Component 2", " (", round(PCData$pc.summary$importance[2,2]*100, 1), "%)", sep="")
+  x_lab <- paste("Principal Component 1", " (", round(PC_VarList[1]*100, 1), "%)", sep="")
+  y_lab <- paste("Principal Component 2", " (", round(PC_VarList[2]*100, 1), "%)", sep="")
 
 
   #Plot PCA alone#
-  Xlim<-c(floor(min(PCData$pc.scores[,1])*10)/10,ceiling(max(PCData$pc.scores[,1])*10)/10)
-  Ylim<-c(floor(min(PCData$pc.scores[,2])*10)/10,ceiling(max(PCData$pc.scores[,2])*10)/10)
+  Xlim<-c(floor(min(PCData$x[,1])*10)/10,ceiling(max(PCData$x[,1])*10)/10)
+  Ylim<-c(floor(min(PCData$x[,2])*10)/10,ceiling(max(PCData$x[,2])*10)/10)
 
   group_classifier <- X[[group]]
   Groups <- levels(group_classifier)
@@ -34,7 +42,7 @@ SubsettingGMM <- function(X,A,PCData,W,group,print.plot=FALSE)
     y<-NULL
     y<-X[grep(Groups[g],group_classifier),]
     z<-NULL
-    z<-as.matrix(PCData$pc.scores[grep(Groups[g],group_classifier),])
+    z<-as.matrix(PCData$x[grep(Groups[g],group_classifier),])
     {
       GPAList[[print(Groups[g])]]<-as.array(x)
       CSList[[Groups[g]]]<-A$Csize[grep(Groups[g],group_classifier)]
