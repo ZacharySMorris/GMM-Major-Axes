@@ -131,7 +131,7 @@ resample.lm <- function(resampled_MA,PC_comp){
 ### Major Axis Calculation and Confidence Interval Function###
 resample.major.axis <- function(X, PCs = c(1:4), MA_number = 1, method = c("bootstrap","jack-knife"), iter = 999, alpha = 0.05){
 
-    # X = a formatted list of shape data and covariates (output by subesttingGMM)
+    # X = a formatted list of shape data and covariates (output by subsettingGMM)
     # MA_number = a single value to identify which axis of variation to study (default is 1, for the first major axis)
     # min_n = a single numberic value representing the minimum number of specimens required for a subgroup analysis (default is 4, arbitrarily)
     # method = method of resampling to be used by resampled.pcs; can be either bootstrap or jack-knife
@@ -260,7 +260,7 @@ major.axis.slopes <- function(resampled.major.axis){
 }
 ###
 
-###
+### Major Axis Plotting ###
 plot.major.axis <- function(Slopes_obj,PCData,Axes_data,PCs){
 
 Slopes_obj <- Slopes_obj
@@ -813,7 +813,7 @@ MA_P_calculation <- function(ConfIntList, Comp_ConfIntList){
 }
 ###
 
-
+### Wrapper function for entire Major Axes of Subgroups Analysis ###
 Major.Axis <- function(X, PCs = c(1:4), PC_comp = 1, MA_number = 1, method = c("bootstrap","jack-knife"), iter = 999, alpha = 0.05){
 
   resampled_ma <- resample.major.axis(X, PCs, MA_number, method, iter, alpha)
@@ -835,49 +835,6 @@ Major.Axis <- function(X, PCs = c(1:4), PC_comp = 1, MA_number = 1, method = c("
 
   out
 }
-
-
-## old angular MA stuff
 ###
-# # Creat vector of the change in each PC score along MA in question.
-# #
-# Y_MA <- temp_comp_MA[2,] - temp_comp_MA[1,]
-# resampled_Y_MA <- t(sapply(temp_comp_resampled_MA, function(x) x[2,]-x[1,]))
-# ###
-#
-# temp_measured_angle <- angle(t(X_MA),Y_MA)
-# temp_resampled_angles <- c()
-
-# ##code for intergroup comparions, with subtracted mean##
-# for (k in 1:nrow(resampled_Y_MA)){
-#   temp_X_MA <- resampled_X_MA[k,]
-#   temp_Y_MA <- resampled_Y_MA[k,]
-#
-#   temp_angle <- angle(temp_X_MA,temp_Y_MA)
-#
-#   temp_resampled_angles <- append(temp_resampled_angles,temp_angle)
-# }
-# temp_angular_var <- temp_resampled_angles - mean(temp_resampled_angles)
-# ##
-# #code for intragroup comparions without mean subtraction##
-# shuffled_X_MA <- resampled_X_MA[sample(nrow(resampled_X_MA)),]
-# shuffled_Y_MA <- resampled_Y_MA[sample(nrow(resampled_Y_MA)),]
-# for (k in 1:nrow(resampled_Y_MA)){
-#   temp_X_MA <- resampled_X_MA[k,]
-#   temp_shuffled_X_MA <- shuffled_X_MA[k,]
-#   temp_Y_MA <- resampled_Y_MA[k,]
-#   temp_shuffled_Y_MA <- shuffled_Y_MA[k,]
-#
-#   temp_X_angle <- angle(t(temp_X_MA),temp_shuffled_X_MA)
-#   temp_Y_angle <- angle(t(temp_Y_MA),temp_shuffled_Y_MA)
-#
-#   temp_resampled_angles <- append(temp_resampled_angles,temp_X_angle,temp_Y_angle)
-# }
-# temp_angular_var <- temp_resampled_angles
-# ##
-
-# normality_tests[paste(temp_group, "&", temp_comp_group, "variance of angular differences", sep = " ")] <- shapiro.test(temp_angular_var)[[2]]
-
-
 
 
