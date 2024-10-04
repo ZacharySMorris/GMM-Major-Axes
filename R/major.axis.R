@@ -42,7 +42,7 @@ major.axis.pca  <- function(pc.scores){
   major.axes <- X
 
   #Generate and assign unique column and r0w names for major.axes
-  Pmax_Col_names <- gsub("PC", "MA", rownames(Pmatrix$loadings))
+  Pmax_Col_names <- gsub("Comp", "MA", rownames(Pmatrix$loadings))
   Pmax_Row_names <- c(paste(Pmax_Col_names, "min", sep = "_"),paste(Pmax_Col_names, "max", sep = "_"))
   colnames(major.axes) <- Pmax_Col_names
   rownames(major.axes) <- Pmax_Row_names
@@ -267,7 +267,7 @@ Slopes_obj <- Slopes_obj
 PCData <- PCData
 Axes_data <- Axes_data
 PCs <- PCs
-PCn <- paste("PC", PCs[[2]], sep = "")
+PCn <- paste("Comp", PCs[[2]], sep = "")
 
 #create X and Y limits
 Xlim<-c(floor(min(Axes_data$pc.scores[,PCs[[1]]])*10)/10,ceiling(max(Axes_data$pc.scores[,PCs[[1]]])*10)/10)
@@ -411,7 +411,7 @@ major.axis.comparison <- function(groups, Transformed.MA_list, resampled_transfo
   n_comp <- length(unlist(comp_groups))
 
   PCn <- grep(PC_comp,PCs,invert=TRUE) # grab all PCs except for dependent variable (PC_comp)
-  col_n <- gsub("PC", "", colnames(transformed.major.axis[[1]])) # get column names and extract PC numbers for matching
+  col_n <- gsub("Comp", "", colnames(transformed.major.axis[[1]])) # get column names and extract PC numbers for matching
 
   MA_number <- MA_number
   if(is.numeric(MA_number) == TRUE){
@@ -578,7 +578,7 @@ posthoc.major.axis.comparison <- function(MASA_result, Comp_MASA_result, group_l
   # }
 
   PCn <- grep(PC_comp,PCs,invert=TRUE) # grab all PCs except for dependent variable (PC_comp)
-  col_n <- gsub("PC", "", colnames(Measured_MA[[1]])) # get column names and extract PC numbers for matching
+  col_n <- gsub("Comp", "", colnames(Measured_MA[[1]])) # get column names and extract PC numbers for matching
   n_comp <- length(groups)*length(Comp_groups)
 
   MA_number <- MA_number
@@ -814,7 +814,7 @@ MA_P_calculation <- function(ConfIntList, Comp_ConfIntList){
 ###
 
 ### Wrapper function for entire Major Axes of Subgroups Analysis ###
-Major.Axis <- function(X, PCs = c(1:4), PC_comp = 1, MA_number = 1, method = c("bootstrap","jack-knife"), iter = 999, alpha = 0.05){
+Major.Axis <- function(X, PCs = c(1:4), MA_number = 1, method = c("bootstrap","jack-knife"), iter = 999, alpha = 0.05){
 
   resampled_ma <- resample.major.axis(X, PCs, MA_number, method, iter, alpha)
 
