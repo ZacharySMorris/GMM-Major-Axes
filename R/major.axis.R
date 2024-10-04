@@ -127,11 +127,11 @@ resample.lm <- function(resampled_MA,PC_comp){
 ###
 
 ### Major Axis Calculation and Confidence Interval Function###
-resample.major.axis <- function(taxa, values, PCs = c(1:4), MA_number = 1, method = c("bootstrap","jack-knife"), iter = 999, alpha = 0.05){
+resample.major.axis <- function(X, PCs = c(1:4), MA_number = 1, method = c("bootstrap","jack-knife"), iter = 999, alpha = 0.05){
 
     # taxa = a list of entities (e.g., species, ecological guilds) for comparison
     # values = a list of ordinated data
-  X = a formatted list of shape data and covariates (output by subsettingGMM)
+    # X = a formatted list of shape data and covariates (output by subsettingGMM)
     # MA_number = a single value to identify which axis of variation to study (default is 1, for the first major axis)
     # min_n = a single numberic value representing the minimum number of specimens required for a subgroup analysis (default is 4, arbitrarily)
     # method = method of resampling to be used by resampled.pcs; can be either bootstrap or jack-knife
