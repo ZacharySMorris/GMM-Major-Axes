@@ -332,8 +332,8 @@ major.axis.lm <- function(group, transformed.ma, resampled_transformed.ma, MA_nu
   # group = name of group
   # transformed.ma = transformed major axis matrix of group
   # resampled_transformed.ma = list of resampled transformed major axis matrices of group
-  # MA_number = which axis to compare, default is the first majro axis
-  # PC_comp = the reference PC to use for model caclulation, default is PC1
+  # MA_number = which axis to compare, default is the first major axis
+  # PC_comp = the reference PC to use for model calculation, default is PC1
 
   ##Load in variables
   group <- group
@@ -814,14 +814,14 @@ MA_P_calculation <- function(ConfIntList, Comp_ConfIntList){
 ###
 
 ### Wrapper function for entire Major Axes of Subgroups Analysis ###
-Major.Axis <- function(X, PCs = c(1:4), MA_number = 1, method = c("bootstrap","jack-knife"), iter = 999, alpha = 0.05){
+Major.Axis <- function(X, PCs = c(1:4), PC_comp = 1, MA_number = 1, method = c("bootstrap","jack-knife"), iter = 999, alpha = 0.05){
 
   resampled_ma <- resample.major.axis(X, PCs, MA_number, method, iter, alpha)
 
   ma_slopes <- list()
   for (i in 1:length(resampled_ma$groups)){
     temp_group <- resampled_ma$groups[i]
-    ma_slopes[[temp_group]] <- major.axis.lm(temp_group, resampled_ma$Transformed.MA[i], resampled_ma$resampled_transformed.ma[i], MA_number, PC_comp)
+    ma_slopes[[temp_group]] <- major.axis.lm(temp_group, resampled_ma$Transformed.MA[[i]], resampled_ma$resampled_transformed.ma[[i]], MA_number, PC_comp)
   }
 
   ma_results <- major.axis.comparison(resampled_ma$groups, resampled_ma$Transformed.MA, resampled_ma$resampled_transformed.ma, MA_number, PCs, PC_comp)
