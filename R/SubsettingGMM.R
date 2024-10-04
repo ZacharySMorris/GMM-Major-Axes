@@ -27,8 +27,10 @@ simple_subsetGMM <- function(X,PCData,group)
     if (ncol(z)==1) {
       z <- t(z)
       PCList[[Groups[g]]]<-z
+      Taxa<-names(GPAList)
     }else{
       PCList[[Groups[g]]]<-z
+      Taxa<-names(GPAList)
     }
     #setTxtProgressBar(pb, i)
     
@@ -41,6 +43,64 @@ simple_subsetGMM <- function(X,PCData,group)
 }
 ###
 
+### Iteratively subset GPA, covariates, and PC scores for each clade into own matrix ###
+SubsettingGMM_V2 <- function(X,A,PCData,W,group,print.plot=FALSE)
+{
+  
+  # X is a data.frame of covariate data
+  # A is a shape dataset output from gpagen
+  # PCData is a shape PCA dataset output from geomorph::gm.prcomp()
+  # W is a dataset of plotting values (output from PlottingValues)
+  # group is a character string that identifies the covariate to create subgroups
+  
+  #create lists for data to be subset
+  GPAList=list()
+  CovariatesList=list()
+  SpeciesList=list()
+  PCList=list()
+  CSList=list()
+  Sizes=list()
+  Colors=list()
+  Shapes=list()
+  Legendcolors=c()
+  Legendshapes=c()
+  Taxa=list()
+  
+  group_classifier <- X[[group]]
+  Groups <- levels(group_classifier)
+  
+  #pb   <- txtProgressBar(1, length(levels(X[[group]])), style=3)
+  for (g in 1:length(Groups)){
+    x<-NULL
+    x<-as.array(A$coords[,,grep(Groups[g],group_classifier)])
+    y<-NULL
+    y<-X[grep(Groups[g],group_classifier),]
+    z<-NULL
+    z<-as.matrix(PCData$x[grep(Groups[g],group_classifier),])
+    {
+      GPAList[[print(Groups[g])]]<-as.array(x)
+      CSList[[Groups[g]]]<-A$Csize[grep(Groups[g],group_classifier)]
+      CovariatesList[[Groups[g]]]<-y
+      SpeciesList[[Groups[g]]]<-y$Species
+      Taxa<-names(GPAList)
+    }
+    if (ncol(z)==1) {
+      z <- t(z)
+      PCList[[Groups[g]]]<-z
+    }else{
+      PCList[[Groups[g]]]<-z
+    }
+    #setTxtProgressBar(pb, i)
+  }
+  out <- list(name = paste(group), taxa = Taxa,
+              coords = GPAList, PCvalues = PCList, CSize = CSList,
+              covariates = CovariatesList,
+              species = SpeciesList
+              )
+  
+  out
+}
+###
 
 
 ### Iteratively subset GPA, covariates, and PC scores for each clade into own matrix ###
