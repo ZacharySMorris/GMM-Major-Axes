@@ -8,6 +8,7 @@ simple_subsetGMM <- function(X,PCData,group)
   
   #create lists for data to be subset
   PCList=list()
+  CovariatesList=list()
   Taxa=list()
   
   group_classifier <- X[[group]]
