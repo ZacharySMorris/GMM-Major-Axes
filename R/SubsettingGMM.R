@@ -72,7 +72,7 @@ SubsettingGMM_V2 <- function(X,A,PCData,group)
     }
     #setTxtProgressBar(pb, i)
   }
-  out <- list(name = paste(group), taxa = Taxa,
+  out <- list(name = paste(group), groups = Taxa,
               coords = GPAList, PCvalues = PCList, CSize = CSList,
               covariates = CovariatesList,
               species = SpeciesList
@@ -180,7 +180,7 @@ SubsettingGMM <- function(X,A,PCData,W,group,print.plot=FALSE)
     Legendshapes=list()
 
   }
-  out <- list(name = paste(group), taxa = Taxa,
+  out <- list(name = paste(group), groups = Taxa,
               coords = GPAList, PCvalues = PCList, CSize = CSList,
               covariates = CovariatesList,
               species = SpeciesList,
