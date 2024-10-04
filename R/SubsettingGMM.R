@@ -1,4 +1,48 @@
 ### Iteratively subset GPA, covariates, and PC scores for each clade into own matrix ###
+simple_subsetGMM <- function(X,PCData,group)
+{
+  # X is a data.frame of covariate data
+  # A is a shape dataset output from gpagen
+  # PCData is a shape PCA dataset output from geomorph::gm.prcomp()
+  # group is a character string that identifies the covariate to create subgroups
+  
+  #create lists for data to be subset
+  PCList=list()
+  Taxa=list()
+  
+  group_classifier <- X[[group]]
+  Groups <- levels(group_classifier)
+  
+  #pb   <- txtProgressBar(1, length(levels(X[[group]])), style=3)
+  for (g in 1:length(Groups)){
+    y<-NULL
+    y<-X[grep(Groups[g],group_classifier),]
+    z<-NULL
+    z<-as.matrix(PCData$x[grep(Groups[g],group_classifier),])
+    {
+      CovariatesList[[Groups[g]]]<-y
+      Taxa<-names(GPAList)
+    }
+    if (ncol(z)==1) {
+      z <- t(z)
+      PCList[[Groups[g]]]<-z
+    }else{
+      PCList[[Groups[g]]]<-z
+    }
+    #setTxtProgressBar(pb, i)
+    
+  }
+  out <- list(name = paste(group), groups = Taxa,
+              PCvalues = PCList,
+              covariates = CovariatesList
+              )
+  out
+}
+###
+
+
+
+### Iteratively subset GPA, covariates, and PC scores for each clade into own matrix ###
 SubsettingGMM <- function(X,A,PCData,W,group,print.plot=FALSE)
 {
 
