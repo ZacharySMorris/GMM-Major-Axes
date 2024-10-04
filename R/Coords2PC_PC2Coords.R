@@ -19,13 +19,13 @@ Coords2PC<-function(coords,pca,gpa){
     if (length(dim(coords))==2) {
       
       dim(coords)[3]<-1
-      x <- two.d.array(coords)
+      x <- geomorph::two.d.array(coords)
       
     }
     
     if (length(dim(coords))==3) {
       
-      x <- two.d.array(coords)
+      x <- geomorph::two.d.array(coords)
       
     }
   }
@@ -37,20 +37,20 @@ Coords2PC<-function(coords,pca,gpa){
   return(w)
 }
 ##
-## PC2Coords takes a set of principal compoenents scores and calculates procrustes aligned coordinates ##
+## PC2Coords takes a set of principal components scores and calculates procrustes aligned coordinates ##
 PC2Coords<-function(pc,pca,gpa){
   #pc = a set of PC scores to be translated into procrustes aligned coordinates
   #pca = the center and rotation matrix for the principal components of interest (output from princomp)
   #gpa = the dimentions of the procrustes aligned dataset (output from gpagen)
   
-  Mshape <- mshape(gpa$coords)
+  Mshape <- geomorph::mshape(gpa$coords)
   Rotation <- pca$rotation
   k <- dim(gpa$coords)[2]
   p <- dim(gpa$coords)[1]
   n <- dim(gpa$coords)[3]
   
   w <- as.matrix( (pc %*%  t(Rotation)) + pca$center)
-  w <- arrayspecs(w,p,k)
+  w <- geomorph::arrayspecs(w,p,k)
   
   return(w)
 }
