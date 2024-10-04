@@ -10,7 +10,7 @@ Coords2PC<-function(coords,pca,gpa){
   p <- dim(gpa$coords)[1]
   n <- dim(gpa$coords)[3]
   
-  Mshape <- pca$pc.summary$center
+  Mshape <- pca$center
   Rotation <- pca$rotation
   
   x <- array(data= NA,dim=c(p,k,1))
