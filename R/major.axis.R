@@ -139,7 +139,7 @@ resample.major.axis <- function(X, PCs = c(1:4), MA_number = 1, method = c("boot
     # alpha = statistical threshold (default if 0.05)
 
     # Specify groups
-    groups <- X$taxa # grab the list of groups in the dataset
+    groups <- X$groups # grab the list of groups in the dataset
     groups_to_remove <- c() # create a list to fill with groups to drop due to undersampling
 
     # Specify method of resampling
@@ -199,18 +199,18 @@ resample.major.axis <- function(X, PCs = c(1:4), MA_number = 1, method = c("boot
           }
 
             #assign values to variables
-            # Pmatrix_list[[X$taxa[i]]] <- group_major.axis$Pmatrix
-            Major.Axis_list[[X$taxa[i]]] <- group_major.axis$major.axes
-            Loadings_list[[X$taxa[i]]] <- group_major.axis$Pmatrix$loadings
-            Transformed.MA_list[[X$taxa[i]]] <- group_transformed.major.axis
-            R.squared_list[[X$taxa[i]]] <- group_r.squared
-            Importance_list[[X$taxa[i]]] <- summary(group_major.axis)
+            # Pmatrix_list[[X$groups[i]]] <- group_major.axis$Pmatrix
+            Major.Axis_list[[X$groups[i]]] <- group_major.axis$major.axes
+            Loadings_list[[X$groups[i]]] <- group_major.axis$Pmatrix$loadings
+            Transformed.MA_list[[X$groups[i]]] <- group_transformed.major.axis
+            R.squared_list[[X$groups[i]]] <- group_r.squared
+            Importance_list[[X$groups[i]]] <- summary(group_major.axis)
 
-            resampled_loadings[[X$taxa[i]]] <- resampled_L
-            resampled_transformed.ma_list[[X$taxa[i]]] <- resampled_T
+            resampled_loadings[[X$groups[i]]] <- resampled_L
+            resampled_transformed.ma_list[[X$groups[i]]] <- resampled_T
 
 
-            loadings_CI[[X$taxa[i]]] <- apply(resampled_loadings_matrix, 2, quantile, probs = c(CI_lower,CI_upper), na.rm = TRUE)
+            loadings_CI[[X$groups[i]]] <- apply(resampled_loadings_matrix, 2, quantile, probs = c(CI_lower,CI_upper), na.rm = TRUE)
 
           }
     }
