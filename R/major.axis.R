@@ -828,7 +828,6 @@ Major.Axis <- function(X, PCs = c(1:4), PC_comp = 1, MA_number = 1, method = c("
   ma_results <- major.axis.comparison(resampled_ma$groups, resampled_ma$Transformed.MA, resampled_ma$resampled_transformed.MA, MA_number, PCs, PC_comp)
   
   out <- list(groups <- groups, PCs <- PCs, axis <- MA_number,
-              Slopes <- ma_slopes,
               R.squared <- resampled_ma$R.squared,
               Loadings <- resampled_ma$Loadings,
               Comparisons <- ma_results$Results
