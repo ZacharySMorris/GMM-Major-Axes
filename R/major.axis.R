@@ -822,7 +822,7 @@ Major.Axis <- function(X, PCs = c(1:4), PC_comp = 1, MA_number = 1, method = c("
   ma_slopes <- list()
   for (i in 1:length(resampled_ma$groups)){
     temp_group <- resampled_ma$groups[i]
-    ma_slopes[[temp_group]] <- major.axis.lm(temp_group, resampled_ma$Transformed.MA[i], resampled_ma$resampled_transformed.MA[i], MA_number, PC_comp)
+    ma_slopes[[temp_group]] <- major.axis.lm(temp_group, resampled_ma$Transformed.MA[[i]], resampled_ma$resampled_transformed.MA[[i]], MA_number, PC_comp)
   }
   
   ma_results <- major.axis.comparison(resampled_ma$groups, resampled_ma$Transformed.MA, resampled_ma$resampled_transformed.MA, MA_number, PCs, PC_comp)
