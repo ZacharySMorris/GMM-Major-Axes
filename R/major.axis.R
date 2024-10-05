@@ -204,7 +204,7 @@ resample.major.axis <- function(X, PCs = c(1:4), MA_number = 1, method = c("boot
             Loadings_list[[X$groups[i]]] <- group_major.axis$Pmatrix$loadings
             Transformed.MA_list[[X$groups[i]]] <- group_transformed.major.axis
             R.squared_list[[X$groups[i]]] <- group_r.squared
-            Importance_list[[X$groups[i]]] <- summary(group_major.axis)
+            Importance_list[[X$groups[i]]] <- summary(group_major.axis)$importance
 
             resampled_loadings[[X$groups[i]]] <- resampled_L
             resampled_transformed.ma_list[[X$groups[i]]] <- resampled_T
@@ -824,7 +824,7 @@ Major.Axis <- function(X, PCs = c(1:4), PC_comp = 1, MA_number = 1, method = c("
   #   ma_slopes[[temp_group]] <- major.axis.lm(temp_group, resampled_ma$Transformed.MA[i], resampled_ma$resampled_transformed.ma[i], MA_number, PC_comp)
   # }
 
-  ma_results <- major.axis.comparison(resampled_ma$groups, resampled_ma$Transformed.MA, resampled_ma$resampled_transformed.ma, MA_number, PCs, PC_comp)
+  ma_results <- major.axis.comparison(resampled_ma$groups, resampled_ma$Transformed.MA, resampled_ma$resampled_transformed.MA, MA_number, PCs, PC_comp)
 
   out <- list(groups <- groups, PCs <- PCs, axis <- MA_number,
               Slopes <- ma_slopes,
