@@ -878,8 +878,7 @@ Major.Axis.RRPP <- function(classifier, PCData, group_factor, PCs = c(1:4), PC_c
   out <- list(groups = groups, PCs = PCs, axis = MA_number,
               R.squared = resampled_ma$R.squared,
               Loadings = resampled_ma$Loadings,
-              subsetdata = X,
-              DF = lm_df
+              Model = lm_model
               )
   class(out) <- "Major.Axis"
   out
