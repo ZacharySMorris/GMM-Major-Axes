@@ -858,7 +858,8 @@ Major.Axis.RRPP <- function(classifier, PCData, group_factor, PCs = c(1:4), PC_c
 
   ##Construct arrays to capture the pairwise slope differences and p-values for the merged results table
   Results_Table <- matrix(data = NA,
-                          dim = c(length(groups),length(groups)),
+                          nrow = length(groups),
+                          ncol = length(groups),
                           dimnames = list(groups,groups)
   )
   ##
