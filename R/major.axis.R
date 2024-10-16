@@ -844,10 +844,7 @@ Major.Axis.RRPP <- function(classifier, PCData, group_factor, PCs = c(1:4), PC_c
   PCData <- PCData #PC dataset to be subset
   group_factor <- group_factor #name of column in classifier with groups to be subset
   
-  X <- simple_subsetGMM(classifier, #covariate dataset which includes a column labeled the same as group_factor
-                        PCData, #PC dataset to be subset
-                        group_factor #name of column in classifier with groups to be subset
-                        )
+  X <- simple_subsetGMM(classifier,PCData,group_factor)
   
   groups <- X$groups
   resampled_ma <- resample.major.axis(X, PCs, MA_number, method, iter, alpha)
