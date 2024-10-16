@@ -865,7 +865,7 @@ Major.Axis.RRPP <- function(classifier, PCData, group_factor, PCs = c(1:4), PC_c
   results_diagonal <- as.logical(diag(nrow(Results_Table)))
   #
   
-  lm_df <<- RRPP::rrpp.data.frame(data = PCData$x, grouping = classifier[,group_factor])
+  lm_df <- RRPP::rrpp.data.frame(data = PCData$x, grouping = classifier[,group_factor])
   lm_model <- RRPP::lm.rrpp(lm_df$data[,-1] ~ lm_df$data[,1] * lm_df$grouping)
   # pair_comp <- summary(pairwise(lm_model, covariate = PCData$x[,1], groups=classifier[,group_factor]), test.type = anova_type)
   # lm_anova <- anova.lm.rrpp(lm_model)
