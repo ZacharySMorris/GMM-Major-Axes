@@ -848,11 +848,11 @@ Major.Axis.RRPP <- function(classifier, PCData, group_factor, PCs = c(1:4), PC_c
   groups <- X$groups
   resampled_ma <- resample.major.axis(X, PCs, MA_number, method, iter, alpha)
   
-  ma_slopes <- list()
-  for (i in 1:length(resampled_ma$groups)){
-    temp_group <- resampled_ma$groups[i]
-    ma_slopes[[temp_group]] <- major.axis.lm(temp_group, resampled_ma$Transformed.MA[[i]], resampled_ma$resampled_transformed.MA[[i]], MA_number, PC_comp)
-  }
+  # ma_slopes <- list()
+  # for (i in 1:length(resampled_ma$groups)){
+  #   temp_group <- resampled_ma$groups[i]
+  #   ma_slopes[[temp_group]] <- major.axis.lm(temp_group, resampled_ma$Transformed.MA[[i]], resampled_ma$resampled_transformed.MA[[i]], MA_number, PC_comp)
+  # }
   
   PCn <- grep(PC_comp,PCs,invert=TRUE) # grab all PCs except for dependent variable (PC_comp)
 
@@ -871,14 +871,12 @@ Major.Axis.RRPP <- function(classifier, PCData, group_factor, PCs = c(1:4), PC_c
   #
   
   lm_model <- lm.rrpp(PCData$x[,-1] ~ PCData$x[,1] * classifier[,group_factor])
-  pair_comp <- summary(pairwise(lm_model, covariate = PCData$x[,1], groups=classifier[,group_factor]), test.type = anova_type)
-  lm_anova <- anova.lm.rrpp(lm_model)
-  
-  Results_Table[results_lower] <- pair_comp$pairwise.tables$angle[results_lower]
-  Results_Table[results_upper] <- pair_comp$pairwise.tables$P[results_upper]
-  Results_Table[results_diagonal] <- 1
-  
-  ma_results <- major.axis.comparison(resampled_ma$groups, resampled_ma$Transformed.MA, resampled_ma$resampled_transformed.MA, MA_number, PCs, PC_comp)
+  # pair_comp <- summary(pairwise(lm_model, covariate = PCData$x[,1], groups=classifier[,group_factor]), test.type = anova_type)
+  # lm_anova <- anova.lm.rrpp(lm_model)
+  # 
+  # Results_Table[results_lower] <- pair_comp$pairwise.tables$angle[results_lower]
+  # Results_Table[results_upper] <- pair_comp$pairwise.tables$P[results_upper]
+  # Results_Table[results_diagonal] <- 1
   
   out <- list(groups = groups, PCs = PCs, axis = MA_number,
               Slopes = ma_slopes,
