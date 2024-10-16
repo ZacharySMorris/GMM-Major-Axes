@@ -840,9 +840,9 @@ Major.Axis <- function(X, PCs = c(1:4), PC_comp = 1, MA_number = 1, method = c("
 ### Wrapper function for entire Major Axes of Subgroups Analysis ###
 Major.Axis.RRPP <- function(classifier, PCData, group_factor, PCs = c(1:4), PC_comp = 1, MA_number = 1, method = c("bootstrap","jack-knife"), iter = 999, alpha = 0.05, anova_type = "VC"){
   
-  classifier = classifier #covariate dataset which includes a column labeled the same as group_factor
-  PCData = PCData #PC dataset to be subset
-  group_factor = group_factor #name of column in classifier with groups to be subset
+  classifier <- classifier #covariate dataset which includes a column labeled the same as group_factor
+  PCData <- PCData #PC dataset to be subset
+  group_factor <- group_factor #name of column in classifier with groups to be subset
   
   X <- simple_subsetGMM(classifier, #covariate dataset which includes a column labeled the same as group_factor
                         PCData, #PC dataset to be subset
