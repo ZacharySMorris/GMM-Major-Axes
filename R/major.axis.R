@@ -878,6 +878,7 @@ Major.Axis.RRPP <- function(classifier, PCData, group_factor, PCs = c(1:4), PC_c
   # Results_Table[results_upper] <- pair_comp$pairwise.tables$P[results_upper]
   # Results_Table[results_diagonal] <- 1
   
+  
   out <- list(groups = groups, PCs = PCs, axis = MA_number,
               Slopes = ma_slopes,
               R.squared = resampled_ma$R.squared,
