@@ -848,11 +848,11 @@ Major.Axis.RRPP <- function(classifier, PCData, group_factor, PCs = c(1:4), PC_c
   groups <- X$groups
   resampled_ma <- resample.major.axis(X, PCs, MA_number, method, iter, alpha)
   
-  # ma_slopes <- list()
-  # for (i in 1:length(resampled_ma$groups)){
-  #   temp_group <- resampled_ma$groups[i]
-  #   ma_slopes[[temp_group]] <- major.axis.lm(temp_group, resampled_ma$Transformed.MA[[i]], resampled_ma$resampled_transformed.MA[[i]], MA_number, PC_comp)
-  # }
+  ma_slopes <- list()
+  for (i in 1:length(resampled_ma$groups)){
+    temp_group <- resampled_ma$groups[i]
+    ma_slopes[[temp_group]] <- major.axis.lm(temp_group, resampled_ma$Transformed.MA[[i]], resampled_ma$resampled_transformed.MA[[i]], MA_number, PC_comp)
+  }
   
   PCn <- grep(PC_comp,PCs,invert=TRUE) # grab all PCs except for dependent variable (PC_comp)
 
