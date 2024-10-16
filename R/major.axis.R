@@ -867,18 +867,20 @@ Major.Axis.RRPP <- function(classifier, PCData, group_factor, PCs = c(1:4), PC_c
   
   lm_df <- RRPP::rrpp.data.frame(data = PCData$x, grouping = classifier[,group_factor])
   lm_model <- RRPP::lm.rrpp(lm_df$data[,-1] ~ lm_df$data[,1] * lm_df$grouping)
-  # pair_comp <- summary(pairwise(lm_model, covariate = PCData$x[,1], groups=classifier[,group_factor]), test.type = anova_type)
-  # lm_anova <- anova.lm.rrpp(lm_model)
-  # 
-  # Results_Table[results_lower] <- pair_comp$pairwise.tables$angle[results_lower]
-  # Results_Table[results_upper] <- pair_comp$pairwise.tables$P[results_upper]
-  # Results_Table[results_diagonal] <- 1
+  pair_comp <- summary(pairwise(lm_model, covariate = PCData$x[,1], groups=classifier[,group_factor]), test.type = anova_type)
+  lm_anova <- anova.lm.rrpp(lm_model)
+
+  Results_Table[results_lower] <- pair_comp$pairwise.tables$angle[results_lower]
+  Results_Table[results_upper] <- pair_comp$pairwise.tables$P[results_upper]
+  Results_Table[results_diagonal] <- 1
   
   
   out <- list(groups = groups, PCs = PCs, axis = MA_number,
               R.squared = resampled_ma$R.squared,
               Loadings = resampled_ma$Loadings,
-              Model = lm_model
+              Model = lm_model,
+              Anova = lm_anova,
+              Comparisons = Results_Table
               )
   class(out) <- "Major.Axis"
   out
