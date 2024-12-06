@@ -840,14 +840,14 @@ Major.Axis <- function(X, PCs = c(1:4), PC_comp = 1, MA_number = 1, method = c("
 ### Wrapper function for entire Major Axes of Subgroups Analysis ###
 Major.Axis.RRPP <- function(classifier, PCData, group_factor, PCs = c(1:4), PC_comp = 1, MA_number = 1, method = c("bootstrap","jack-knife"), iter = 999, alpha = 0.05, anova_type = "VC"){
   
-  classifier <- classifier #covariate dataset which includes a column labeled the same as group_factor
-  PCData <- PCData #PC dataset to be subset
-  group_factor <- group_factor #name of column in classifier with groups to be subset
+  classifier <<- classifier #covariate dataset which includes a column labeled the same as group_factor
+  PCData <<- PCData #PC dataset to be subset
+  group_factor <<- group_factor #name of column in classifier with groups to be subset
   
-  X <- simple_subsetGMM(classifier,PCData,group_factor)
+  X <<- simple_subsetGMM(classifier,PCData,group_factor)
   
   groups <- X$groups
-  resampled_ma <- resample.major.axis(X, PCs, MA_number, method, iter, alpha)
+  resampled_ma <<- resample.major.axis(X, PCs, MA_number, method, iter, alpha)
   
   PCn <- grep(PC_comp,PCs,invert=TRUE) # grab all PCs except for dependent variable (PC_comp)
 
@@ -865,8 +865,8 @@ Major.Axis.RRPP <- function(classifier, PCData, group_factor, PCs = c(1:4), PC_c
   results_diagonal <- as.logical(diag(nrow(Results_Table)))
   #
   
-  lm_df <- RRPP::rrpp.data.frame(data = PCData$x, grouping = classifier[,group_factor])
-  lm_model <- RRPP::lm.rrpp(lm_df$data[,-1] ~ lm_df$data[,1] * lm_df$grouping)
+  lm_df <<- RRPP::rrpp.data.frame(data = PCData$x, grouping = classifier[,group_factor])
+  lm_model <<- RRPP::lm.rrpp(lm_df$data[,-1] ~ lm_df$data[,1] * lm_df$grouping, data=lm_df)
   pair_comp <- summary(pairwise(lm_model, covariate = PCData$x[,1], groups=classifier[,group_factor]), test.type = anova_type)
   lm_anova <- anova.lm.rrpp(lm_model)
 
