@@ -940,188 +940,188 @@ posthoc.major.axis.RRPP <- function(X, Y, Xgroups = NULL,Ygroups = NULL, PCs = c
 }
   
   
-  # group_list = a list of groups to be compared, must match at least one group from both MASA result files
-  # MASA_result =
-  # Comp_MASA_result =
-  # MA_number =
-  # PCs =
-  # PC_comp =
-  
-  ##Load in variables
-  MASA_result <- MASA_result
-  Comp_MASA_result <- Comp_MASA_result
-  
-  ##Set the two groups of MA to be compared
-  groups <- MASA_result$groups
-  Measured_MA <- MASA_result$Transformed.MA
-  Resampled_MA <- MASA_result$resampled_transformed.MA
-  Comp_groups <- Comp_MASA_result$groups
-  Comp_Measured_MA <- Comp_MASA_result$Transformed.MA
-  Comp_Resampled_MA <- Comp_MASA_result$resampled_transformed.MA
-  ##
-  
-  ##subset groups to match group_list, if it is called
-  if (!missing(group_list)){
-    groups <- groups[groups %in% group_list]
-    Comp_groups <- Comp_groups[Comp_groups %in% group_list]
-  }
-  ##
-  
-  
-  # if (!(class(MASA_result) == "ConfIntList" & class(Comp_MASA_result) == "ConfIntList")){
-  #   print("Object(s) must be confidence interval list(s).")
+  # # group_list = a list of groups to be compared, must match at least one group from both MASA result files
+  # # MASA_result =
+  # # Comp_MASA_result =
+  # # MA_number =
+  # # PCs =
+  # # PC_comp =
+  # 
+  # ##Load in variables
+  # MASA_result <- MASA_result
+  # Comp_MASA_result <- Comp_MASA_result
+  # 
+  # ##Set the two groups of MA to be compared
+  # groups <- MASA_result$groups
+  # Measured_MA <- MASA_result$Transformed.MA
+  # Resampled_MA <- MASA_result$resampled_transformed.MA
+  # Comp_groups <- Comp_MASA_result$groups
+  # Comp_Measured_MA <- Comp_MASA_result$Transformed.MA
+  # Comp_Resampled_MA <- Comp_MASA_result$resampled_transformed.MA
+  # ##
+  # 
+  # ##subset groups to match group_list, if it is called
+  # if (!missing(group_list)){
+  #   groups <- groups[groups %in% group_list]
+  #   Comp_groups <- Comp_groups[Comp_groups %in% group_list]
   # }
-  
-  PCn <- grep(PC_comp,PCs,invert=TRUE) # grab all PCs except for dependent variable (PC_comp)
-  col_n <- gsub("Comp", "", colnames(Measured_MA[[1]])) # get column names and extract PC numbers for matching
-  n_comp <- length(groups)*length(Comp_groups)
-  
-  MA_number <- MA_number
-  if(is.numeric(MA_number) == TRUE){
-    MA_name <- paste("MA", MA_number, "_", sep = "")
-  }
-  
-  MA_rows.list <- lapply(lapply(Measured_MA, FUN = "rownames"), FUN = "grep", pattern = MA_name)
-  Comp_MA_rows.list <- lapply(lapply(Comp_Measured_MA, FUN = "rownames"), FUN = "grep", pattern = MA_name)
-  
-  # if(is.character(MA_number) == TRUE){
-  # sub('.*-([0-9]+).*','\\1', MA_number)
+  # ##
+  # 
+  # 
+  # # if (!(class(MASA_result) == "ConfIntList" & class(Comp_MASA_result) == "ConfIntList")){
+  # #   print("Object(s) must be confidence interval list(s).")
+  # # }
+  # 
+  # PCn <- grep(PC_comp,PCs,invert=TRUE) # grab all PCs except for dependent variable (PC_comp)
+  # col_n <- gsub("Comp", "", colnames(Measured_MA[[1]])) # get column names and extract PC numbers for matching
+  # n_comp <- length(groups)*length(Comp_groups)
+  # 
+  # MA_number <- MA_number
+  # if(is.numeric(MA_number) == TRUE){
+  #   MA_name <- paste("MA", MA_number, "_", sep = "")
   # }
+  # 
+  # MA_rows.list <- lapply(lapply(Measured_MA, FUN = "rownames"), FUN = "grep", pattern = MA_name)
+  # Comp_MA_rows.list <- lapply(lapply(Comp_Measured_MA, FUN = "rownames"), FUN = "grep", pattern = MA_name)
+  # 
+  # # if(is.character(MA_number) == TRUE){
+  # # sub('.*-([0-9]+).*','\\1', MA_number)
+  # # }
+  # # #
+  # 
+  # # ##Construct tables to capture angular differences and p-values for pairwise comparisons, and the merged results table
+  # # Angular_Diff_Table <- matrix(data = NA , nrow = length(groups), ncol = length(Comp_groups), dimnames=(list(groups,Comp_groups)))
+  # # Angular_P_Table <- matrix(data = NA , nrow = length(groups), ncol = length(Comp_groups), dimnames=(list(groups,Comp_groups)))
+  # # Results_Table <- matrix(data = NA , nrow = length(groups), ncol = length(Comp_groups), dimnames=(list(groups,Comp_groups)))
+  # # ##
+  # 
+  # ##Construct arrays to capture pairwise slope differences, p-values, and the merged results table for each PC
+  # Slope_Diff_Tables <- array(data = NA,
+  #                            dim = c(length(groups),length(Comp_groups),length(PCn)),
+  #                            dimnames = list(groups,Comp_groups,paste("PC",PCn,sep = ""))
+  # )
+  # Slope_P_Tables <- array(data = NA,
+  #                         dim = c(length(groups),length(Comp_groups),length(PCn)),
+  #                         dimnames = list(groups,Comp_groups,paste("PC",PCn,sep = ""))
+  # )
+  # Comp_Slope_P_Tables <- array(data = NA,
+  #                              dim = c(length(groups),length(Comp_groups),length(PCn)),
+  #                              dimnames = list(groups,Comp_groups,paste("PC",PCn,sep = ""))
+  # )
+  # Adj_Slope_P_Tables <- array(data = NA,
+  #                             dim = c(length(groups),length(Comp_groups),length(PCn)),
+  #                             dimnames = list(groups,Comp_groups,paste("PC",PCn,sep = ""))
+  # )
+  # Results_Tables <- array(data = NA,
+  #                         dim = c(length(groups),length(Comp_groups),length(PCn)),
+  #                         dimnames = list(groups,Comp_groups,paste("PC",PCn,sep = ""))
+  # )
+  # ##
+  # 
+  # ##Create indices for lower triangle, upper triangle, and diagonals
+  # results_lower <- lower.tri(Results_Tables[,,1])
+  # results_upper <- upper.tri(Results_Tables[,,1])
+  # results_diagonal <- as.logical(diag(nrow(Results_Tables[,,1])))
+  # ##
+  # 
+  # # ##Save list of normality test of the resampled diffrences
+  # # normality_tests <- list()
+  # # ##
+  # 
+  # ##Make progress bar object
+  # message("Calculating pairwise differences in slopes for MA ", MA_number)
+  # pb = txtProgressBar(min = 0, max = n_comp, style = 3)
+  # step_n = 1
+  # ##
+  # 
+  # ##Look for making pairwise comparisons among the two sets of groups
+  # for (i in 1:length(groups)){
+  #   temp_group <- groups[[i]] # take the name of group
+  #   temp_MA_rows <- MA_rows.list[[i]] #
+  #   temp_MA <- Measured_MA[[temp_group]][temp_MA_rows,]
+  #   temp_resampled_MA <- lapply(Resampled_MA[[temp_group]], function(x) x[temp_MA_rows,])
+  #   
+  #   # calculate group slope and within group permuted difference in slope
+  #   temp_lm <- lm(temp_MA[,-PC_comp] ~ temp_MA[,PC_comp])
+  #   temp_slope <- temp_lm$coefficients[2,] # measured group slope
+  #   
+  #   temp_resampled_slopes <- resample.lm(temp_resampled_MA,PC_comp)$resampled_lm_slopes
+  #   temp_slope_dist <- temp_resampled_slopes[sample(nrow(temp_resampled_slopes)),] - temp_resampled_slopes # distribution of differences in slope derived from within group permutation
+  #   #
+  #   
+  #   for (j in 1:length(Comp_groups)){
+  #     setTxtProgressBar(pb,step_n)
+  #     step_n <- step_n+1
+  #     
+  #     temp_comp_group <- Comp_groups[[j]]
+  #     temp_comp_MA_rows <- Comp_MA_rows.list[[temp_comp_group]] #
+  #     temp_comp_MA <- Comp_Measured_MA[[temp_comp_group]][temp_comp_MA_rows,]
+  #     temp_comp_resampled_MA <- lapply(Comp_Resampled_MA[[temp_comp_group]], function(x) x[temp_comp_MA_rows,])
+  #     
+  #     # calculate group slope and within group permuted difference in slope
+  #     temp_comp_lm <- lm(temp_comp_MA[,-PC_comp] ~ temp_comp_MA[,PC_comp])
+  #     temp_comp_slope <- temp_comp_lm$coefficients[2,] # group slope
+  #     
+  #     temp_comp_resampled_slopes <- resample.lm(temp_comp_resampled_MA,PC_comp)$resampled_lm_slopes
+  #     temp_comp_slope_dist <- temp_comp_resampled_slopes[sample(nrow(temp_comp_resampled_slopes)),] - temp_comp_resampled_slopes # distribution of differences in slope derived from within group permutation
+  #     #
+  #     
+  #     # generate pooled distribution of slope differences
+  #     Pooled_slope_dist <- rbind(temp_slope_dist,temp_comp_slope_dist)
+  #     
+  #     # calculate difference in slopes between groups for each PC
+  #     temp_slope_diff <- abs(temp_slope - temp_comp_slope)
+  #     
+  #     # determine the number of cases where the resambled distribution showed
+  #     # a greater difference in slope than the measured difference, by PC
+  #     Pooled_slope_sigs <- apply(Pooled_slope_dist, 1, function(x) abs(temp_slope_diff) < abs(x))
+  #     
+  #     # calculate the percentage of greater differences to estimate p-value
+  #     temp_slope_P_val <- apply(Pooled_slope_sigs, 1, function(x) sum(x) / length(x))
+  #     
+  #     # determine the number of cases where the resambled distribution showed
+  #     # a greater difference in slope than the measured difference, by PC
+  #     comp_slope_sigs <- apply(temp_comp_slope_dist, 1, function(x) abs(temp_slope_diff) < abs(x))
+  #     
+  #     # calculate the percentage of greater differences to estimate p-value
+  #     temp_comp_slope_P_val <- apply(comp_slope_sigs, 1, function(x) sum(x) / length(x))
+  #     
+  #     # # calculate the combined mean percentage of greater differences, to estimate p-value across all PCs
+  #     # temp_combined_P_val <- mean(temp_slope_P_val)
+  #     
+  #     # add values to correct cells across arrays
+  #     Slope_Diff_Tables[i,j,] <- temp_slope_diff
+  #     Slope_P_Tables[i,j,] <- temp_slope_P_val
+  #     Comp_Slope_P_Tables[i,j,] <- temp_comp_slope_P_val
+  #     Adj_Slope_P_Tables[i,j,] <- p.adjust(temp_slope_P_val, n=n_comp)
+  #   }
+  # }
+  # 
+  # ##Create indices for lower triangle, upper triangle, and diagonals
+  # results_lower <- lower.tri(Results_Table)
+  # results_upper <- upper.tri(Results_Table)
+  # results_diagonal <- as.logical(diag(nrow(Results_Table)))
   # #
-  
-  # ##Construct tables to capture angular differences and p-values for pairwise comparisons, and the merged results table
-  # Angular_Diff_Table <- matrix(data = NA , nrow = length(groups), ncol = length(Comp_groups), dimnames=(list(groups,Comp_groups)))
-  # Angular_P_Table <- matrix(data = NA , nrow = length(groups), ncol = length(Comp_groups), dimnames=(list(groups,Comp_groups)))
-  # Results_Table <- matrix(data = NA , nrow = length(groups), ncol = length(Comp_groups), dimnames=(list(groups,Comp_groups)))
-  # ##
-  
-  ##Construct arrays to capture pairwise slope differences, p-values, and the merged results table for each PC
-  Slope_Diff_Tables <- array(data = NA,
-                             dim = c(length(groups),length(Comp_groups),length(PCn)),
-                             dimnames = list(groups,Comp_groups,paste("PC",PCn,sep = ""))
-  )
-  Slope_P_Tables <- array(data = NA,
-                          dim = c(length(groups),length(Comp_groups),length(PCn)),
-                          dimnames = list(groups,Comp_groups,paste("PC",PCn,sep = ""))
-  )
-  Comp_Slope_P_Tables <- array(data = NA,
-                               dim = c(length(groups),length(Comp_groups),length(PCn)),
-                               dimnames = list(groups,Comp_groups,paste("PC",PCn,sep = ""))
-  )
-  Adj_Slope_P_Tables <- array(data = NA,
-                              dim = c(length(groups),length(Comp_groups),length(PCn)),
-                              dimnames = list(groups,Comp_groups,paste("PC",PCn,sep = ""))
-  )
-  Results_Tables <- array(data = NA,
-                          dim = c(length(groups),length(Comp_groups),length(PCn)),
-                          dimnames = list(groups,Comp_groups,paste("PC",PCn,sep = ""))
-  )
-  ##
-  
-  ##Create indices for lower triangle, upper triangle, and diagonals
-  results_lower <- lower.tri(Results_Tables[,,1])
-  results_upper <- upper.tri(Results_Tables[,,1])
-  results_diagonal <- as.logical(diag(nrow(Results_Tables[,,1])))
-  ##
-  
-  # ##Save list of normality test of the resampled diffrences
-  # normality_tests <- list()
-  # ##
-  
-  ##Make progress bar object
-  message("Calculating pairwise differences in slopes for MA ", MA_number)
-  pb = txtProgressBar(min = 0, max = n_comp, style = 3)
-  step_n = 1
-  ##
-  
-  ##Look for making pairwise comparisons among the two sets of groups
-  for (i in 1:length(groups)){
-    temp_group <- groups[[i]] # take the name of group
-    temp_MA_rows <- MA_rows.list[[i]] #
-    temp_MA <- Measured_MA[[temp_group]][temp_MA_rows,]
-    temp_resampled_MA <- lapply(Resampled_MA[[temp_group]], function(x) x[temp_MA_rows,])
-    
-    # calculate group slope and within group permuted difference in slope
-    temp_lm <- lm(temp_MA[,-PC_comp] ~ temp_MA[,PC_comp])
-    temp_slope <- temp_lm$coefficients[2,] # measured group slope
-    
-    temp_resampled_slopes <- resample.lm(temp_resampled_MA,PC_comp)$resampled_lm_slopes
-    temp_slope_dist <- temp_resampled_slopes[sample(nrow(temp_resampled_slopes)),] - temp_resampled_slopes # distribution of differences in slope derived from within group permutation
-    #
-    
-    for (j in 1:length(Comp_groups)){
-      setTxtProgressBar(pb,step_n)
-      step_n <- step_n+1
-      
-      temp_comp_group <- Comp_groups[[j]]
-      temp_comp_MA_rows <- Comp_MA_rows.list[[temp_comp_group]] #
-      temp_comp_MA <- Comp_Measured_MA[[temp_comp_group]][temp_comp_MA_rows,]
-      temp_comp_resampled_MA <- lapply(Comp_Resampled_MA[[temp_comp_group]], function(x) x[temp_comp_MA_rows,])
-      
-      # calculate group slope and within group permuted difference in slope
-      temp_comp_lm <- lm(temp_comp_MA[,-PC_comp] ~ temp_comp_MA[,PC_comp])
-      temp_comp_slope <- temp_comp_lm$coefficients[2,] # group slope
-      
-      temp_comp_resampled_slopes <- resample.lm(temp_comp_resampled_MA,PC_comp)$resampled_lm_slopes
-      temp_comp_slope_dist <- temp_comp_resampled_slopes[sample(nrow(temp_comp_resampled_slopes)),] - temp_comp_resampled_slopes # distribution of differences in slope derived from within group permutation
-      #
-      
-      # generate pooled distribution of slope differences
-      Pooled_slope_dist <- rbind(temp_slope_dist,temp_comp_slope_dist)
-      
-      # calculate difference in slopes between groups for each PC
-      temp_slope_diff <- abs(temp_slope - temp_comp_slope)
-      
-      # determine the number of cases where the resambled distribution showed
-      # a greater difference in slope than the measured difference, by PC
-      Pooled_slope_sigs <- apply(Pooled_slope_dist, 1, function(x) abs(temp_slope_diff) < abs(x))
-      
-      # calculate the percentage of greater differences to estimate p-value
-      temp_slope_P_val <- apply(Pooled_slope_sigs, 1, function(x) sum(x) / length(x))
-      
-      # determine the number of cases where the resambled distribution showed
-      # a greater difference in slope than the measured difference, by PC
-      comp_slope_sigs <- apply(temp_comp_slope_dist, 1, function(x) abs(temp_slope_diff) < abs(x))
-      
-      # calculate the percentage of greater differences to estimate p-value
-      temp_comp_slope_P_val <- apply(comp_slope_sigs, 1, function(x) sum(x) / length(x))
-      
-      # # calculate the combined mean percentage of greater differences, to estimate p-value across all PCs
-      # temp_combined_P_val <- mean(temp_slope_P_val)
-      
-      # add values to correct cells across arrays
-      Slope_Diff_Tables[i,j,] <- temp_slope_diff
-      Slope_P_Tables[i,j,] <- temp_slope_P_val
-      Comp_Slope_P_Tables[i,j,] <- temp_comp_slope_P_val
-      Adj_Slope_P_Tables[i,j,] <- p.adjust(temp_slope_P_val, n=n_comp)
-    }
-  }
-  
-  ##Create indices for lower triangle, upper triangle, and diagonals
-  results_lower <- lower.tri(Results_Table)
-  results_upper <- upper.tri(Results_Table)
-  results_diagonal <- as.logical(diag(nrow(Results_Table)))
-  #
-  
-  lm_df <<- RRPP::rrpp.data.frame(data = PCData$x, grouping = classifier[,group_factor])
-  lm_model <<- RRPP::lm.rrpp(lm_df$data[,-1] ~ lm_df$data[,1] * lm_df$grouping, data=lm_df)
-  pair_comp <- summary(pairwise(lm_model, covariate = PCData$x[,1], groups=classifier[,group_factor]), test.type = anova_type)
-  lm_anova <- anova.lm.rrpp(lm_model)
-  
-  Results_Table[results_lower] <- pair_comp$pairwise.tables$angle[results_lower]
-  Results_Table[results_upper] <- pair_comp$pairwise.tables$P[results_upper]
-  Results_Table[results_diagonal] <- 1
-  
-  
-  out <- list(groups = groups, PCs = PCs, axis = MA_number,
-              R.squared = resampled_ma$R.squared,
-              Loadings = resampled_ma$Loadings,
-              Model = lm_model,
-              Anova = lm_anova,
-              Comparisons = Results_Table
-  )
-  class(out) <- "Major.Axis"
-  out
-  
-}
+  # 
+  # lm_df <<- RRPP::rrpp.data.frame(data = PCData$x, grouping = classifier[,group_factor])
+  # lm_model <<- RRPP::lm.rrpp(lm_df$data[,-1] ~ lm_df$data[,1] * lm_df$grouping, data=lm_df)
+  # pair_comp <- summary(pairwise(lm_model, covariate = PCData$x[,1], groups=classifier[,group_factor]), test.type = anova_type)
+  # lm_anova <- anova.lm.rrpp(lm_model)
+  # 
+  # Results_Table[results_lower] <- pair_comp$pairwise.tables$angle[results_lower]
+  # Results_Table[results_upper] <- pair_comp$pairwise.tables$P[results_upper]
+  # Results_Table[results_diagonal] <- 1
+  # 
+  # 
+  # out <- list(groups = groups, PCs = PCs, axis = MA_number,
+  #             R.squared = resampled_ma$R.squared,
+  #             Loadings = resampled_ma$Loadings,
+  #             Model = lm_model,
+  #             Anova = lm_anova,
+  #             Comparisons = Results_Table
+  # )
+  # class(out) <- "Major.Axis"
+  # out
+  # 
+# }
 ##
