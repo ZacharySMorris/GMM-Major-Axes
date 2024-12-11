@@ -937,7 +937,9 @@ posthoc.major.axis.RRPP <- function(X, Y, Xgroups = NULL,Ygroups = NULL, PCs = c
               Loadings = resampled_ma$Loadings,
               Model = lm_model,
               Anova = lm_anova,
-              Comparisons = Results_Table
+              Comparisons = Results_Table,
+              results_Xcomp = results_Xcomp,
+              results_Ycomp = results_Ycomp
   )
   class(out) <- "Major.Axis"
   out
