@@ -30,6 +30,58 @@ simple_subsetGMM <- function(X,PCData,group)
 }
 ###
 
+### Function for merging datasets created with simple_subsetGMM ###
+mergeGMM <- function(X,Y,Xgroups = NULL,Ygroups = NULL){
+  # X and Y are outputs from simple_subsetGMM
+  # Xgroups and Ygroups are otpional character strings that identify subgroups to be merged
+  
+  if (is.null(Xgroups)){
+    Xgroups = X$groups
+  }
+  if (is.null(Ygroups)){
+    Ygroups = Y$groups
+  }
+  
+  Zgroups <- c(Xgroups,Ygroups)
+  ZPCvalues <- append(X$PCvalues[Xgroups],Y$PCvalues[Ygroups])
+  Zname <- paste(X$name,Y$name,sep = "_vs_")
+  
+  out <- list(name = Zname,
+              groups = Zgroups,
+              PCvalues = ZPCvalues)
+  out
+}
+###
+
+### Function for merging created with simple_subsetGMM to create a single PCA dataset and classifier label ###
+mergePCA <- function(X,Y,Xgroups = NULL,Ygroups = NULL){
+  # X and Y are outputs from simple_subsetGMM
+  # Xgroups and Ygroups are otpional character strings that identify subgroups to be merged
+  
+  if (is.null(Xgroups)){
+    Xgroups = X$groups
+  }
+  if (is.null(Ygroups)){
+    Ygroups = Y$groups
+  }
+  
+  #check that all subsets have the same PCs
+  if (!0 == var(c(sapply(X$PCvalues,FUN = ncol), sapply(Y$PCvalues,FUN = ncol)))){stop("The number of PCs do not match among subsets and cannot be coerced into single matrix.")
+  }
+  
+  Xmatrix <- do.call(rbind,X$PCvalues[c(Xgroups)])
+  Xclassifier <- rep(Xgroups, sapply(X$PCvalues[c(Xgroups)],FUN = nrow))
+  Ymatrix <- do.call(rbind,Y$PCvalues[c(Ygroups)])
+  Yclassifier <- rep(Ygroups, sapply(Y$PCvalues[c(Ygroups)],FUN = nrow))
+  
+  Zmatrix <- rbind(Xmatrix,Ymatrix)
+  Zclassifier <- factor(c(Xclassifier,Yclassifier))
+  
+  out <- list(x=Zmatrix,classifier=Zclassifier)
+  out
+}
+###
+
 ### Iteratively subset GPA, covariates, and PC scores for each clade into own matrix ###
 SubsettingGMM_V2 <- function(X,A,PCData,group)
 {
