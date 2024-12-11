@@ -917,11 +917,8 @@ posthoc.major.axis.RRPP <- function(X, Y, Xgroups = NULL,Ygroups = NULL, PCs = c
   ##
   
   ##Create indices for lower triangle, upper triangle, and diagonals
-  # results_lower <- lower.tri(Results_Table)
-  # results_upper <- upper.tri(Results_Table)
   results_Xcomp <- match(Xgroups,rownames(Results_Table))
   results_Ycomp <- match(Ygroups,colnames(Results_Table))
-  results_diagonal <- as.logical(diag(nrow(Results_Table)))
   #
 
   lm_df <<- RRPP::rrpp.data.frame(data = PCData$x, grouping = PCData$classifier)
@@ -929,24 +926,15 @@ posthoc.major.axis.RRPP <- function(X, Y, Xgroups = NULL,Ygroups = NULL, PCs = c
   pair_comp <- summary(pairwise(lm_model, covariate = PCData$x[,1], groups=PCData$classifier), test.type = anova_type)
   lm_anova <- anova.lm.rrpp(lm_model)
   
-  ## use to grab only important comparisons...
-  # match(group_comps,rownames(pair_comp$summary.table))
-  
-  # Results_Table[results_lower] <- pair_comp$pairwise.tables$angle[results_lower]
-  # Results_Table[results_upper] <- pair_comp$pairwise.tables$P[results_upper]
   Results_Table[results_Ycomp,results_Xcomp] <- pair_comp$pairwise.tables$angle[results_Ycomp,results_Xcomp]
   Results_Table[results_Xcomp,results_Ycomp] <- pair_comp$pairwise.tables$P[results_Xcomp,results_Ycomp]
-  Results_Table[results_diagonal] <- 1
-  
   
   out <- list(groups = groups, PCs = PCs, axis = MA_number,
               R.squared = resampled_ma$R.squared,
               Loadings = resampled_ma$Loadings,
               Model = lm_model,
               Anova = lm_anova,
-              Comparisons = Results_Table,
-              results_Xcomp = results_Xcomp,
-              results_Ycomp = results_Ycomp
+              Comparisons = Results_Table
   )
   class(out) <- "Major.Axis"
   out
