@@ -891,6 +891,13 @@ posthoc.major.axis.RRPP <- function(X, Y, Xgroups = NULL,Ygroups = NULL, PCs = c
   # X and Y are outputs from simple_subsetGMM to be compared
   # Xgroups and Ygroups are otpional character strings that identify subgroups to be merged
   
+  if (is.null(Xgroups)){
+    Xgroups = X$groups
+  }
+  if (is.null(Ygroups)){
+    Ygroups = Y$groups
+  }
+  
   Z <<- mergeGMM(X,Y,Xgroups,Ygroups)
   PCData <<- mergePCA(X,Y,Xgroups,Ygroups)
     
