@@ -910,8 +910,10 @@ posthoc.major.axis.RRPP <- function(X, Y, Xgroups = NULL,Ygroups = NULL, PCs = c
   ##
   
   ##Create indices for lower triangle, upper triangle, and diagonals
-  results_lower <- lower.tri(Results_Table)
-  results_upper <- upper.tri(Results_Table)
+  # results_lower <- lower.tri(Results_Table)
+  # results_upper <- upper.tri(Results_Table)
+  results_Xcomp <- match(Xgroups,rownames(Results_Table))
+  results_Ycomp <- match(Ygroups,colnames(Results_Table))
   results_diagonal <- as.logical(diag(nrow(Results_Table)))
   #
 
@@ -921,10 +923,12 @@ posthoc.major.axis.RRPP <- function(X, Y, Xgroups = NULL,Ygroups = NULL, PCs = c
   lm_anova <- anova.lm.rrpp(lm_model)
   
   ## use to grab only important comparisons...
-  match(group_comps,rownames(pair_comp$summary.table))
+  # match(group_comps,rownames(pair_comp$summary.table))
   
-  Results_Table[results_lower] <- pair_comp$pairwise.tables$angle[results_lower]
-  Results_Table[results_upper] <- pair_comp$pairwise.tables$P[results_upper]
+  # Results_Table[results_lower] <- pair_comp$pairwise.tables$angle[results_lower]
+  # Results_Table[results_upper] <- pair_comp$pairwise.tables$P[results_upper]
+  Results_Table[results_Ycomp,results_Xcomp] <- pair_comp$pairwise.tables$angle[results_Ycomp,results_Xcomp]
+  Results_Table[results_Xcomp,results_Ycomp] <- pair_comp$pairwise.tables$P[results_Xcomp,results_Ycomp]
   Results_Table[results_diagonal] <- 1
   
   
