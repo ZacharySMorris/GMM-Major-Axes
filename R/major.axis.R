@@ -1123,5 +1123,5 @@ posthoc.major.axis.RRPP <- function(X, Y, Xgroups = NULL,Ygroups = NULL, PCs = c
   class(out) <- "Major.Axis"
   out
   
-}
+# }
 ##
