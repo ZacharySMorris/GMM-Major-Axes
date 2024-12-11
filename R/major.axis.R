@@ -915,20 +915,20 @@ posthoc.major.axis.RRPP <- function(X, Y, Xgroups = NULL,Ygroups = NULL, PCs = c
                           dimnames = list(groups,groups)
   )
   ##
-  
-  ##Create indices for lower triangle, upper triangle, and diagonals
+  ## create indices for lower triangle, upper triangle, and diagonals
   results_Xcomp <- match(Xgroups,rownames(Results_Table))
   results_Ycomp <- match(Ygroups,colnames(Results_Table))
-  #
-
+  ##
+  ## create lm model, perform anova, and extract pairwise comparisons
   lm_df <<- RRPP::rrpp.data.frame(data = PCData$x, grouping = PCData$classifier)
   lm_model <<- RRPP::lm.rrpp(lm_df$data[,-1] ~ lm_df$data[,1] * lm_df$grouping, data=lm_df)
   pair_comp <- summary(pairwise(lm_model, covariate = PCData$x[,1], groups=PCData$classifier), test.type = anova_type)
   lm_anova <- anova.lm.rrpp(lm_model)
-  
+  ##
+  ## save pairwise comparison values into results table
   Results_Table[results_Ycomp,results_Xcomp] <- pair_comp$pairwise.tables$angle[results_Ycomp,results_Xcomp]
   Results_Table[results_Xcomp,results_Ycomp] <- pair_comp$pairwise.tables$P[results_Xcomp,results_Ycomp]
-  
+  ##
   out <- list(groups = groups, PCs = PCs, axis = MA_number,
               R.squared = resampled_ma$R.squared,
               Loadings = resampled_ma$Loadings,
