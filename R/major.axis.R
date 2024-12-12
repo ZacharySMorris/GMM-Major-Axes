@@ -270,8 +270,8 @@ PCs <- PCs
 PCn <- paste("Comp", PCs[[2]], sep = "")
 
 #create X and Y limits
-Xlim<-c(floor(min(Axes_data$pc.scores[,PCs[[1]]])*10)/10,ceiling(max(Axes_data$pc.scores[,PCs[[1]]])*10)/10)
-Ylim<-c(floor(min(Axes_data$pc.scores[,PCs[[2]]])*10)/10,ceiling(max(Axes_data$pc.scores[,PCs[[2]]])*10)/10)
+Xlim<-c(floor(min(Axes_data$x[,PCs[[1]]])*10)/10,ceiling(max(Axes_data$x[,PCs[[1]]])*10)/10)
+Ylim<-c(floor(min(Axes_data$x[,PCs[[2]]])*10)/10,ceiling(max(Axes_data$x[,PCs[[2]]])*10)/10)
 
 
 for (i in 1:length(Slopes_obj)){
@@ -295,8 +295,8 @@ for (i in 1:length(Slopes_obj)){
   plot(0, 0, type = "n",
        xlim = Xlim,
        ylim = Ylim,
-       xlab = paste("Principal Component ", PCs[[1]], " (", round(100*Axes_data$pc.summary$importance[2,PCs[[1]]], digits = 1), "%)", sep = ""),
-       ylab = paste("Principal Component ", PCs[[2]], " (", round(100*Axes_data$pc.summary$importance[2,PCs[[2]]], digits = 1), "%)", sep = ""),
+       xlab = paste("Principal Component ", PCs[[1]], " (", round(100*summary(Axes_data)$PC.summary[2,PCs[[1]]], digits = 1), "%)", sep = ""),
+       ylab = paste("Principal Component ", PCs[[2]], " (", round(100*summary(Axes_data)$PC.summary[2,PCs[[2]]], digits = 1), "%)", sep = ""),
        axes = FALSE,
        frame.plot = FALSE,
        asp=F)

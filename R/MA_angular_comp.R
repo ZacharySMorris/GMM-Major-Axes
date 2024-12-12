@@ -10,15 +10,14 @@ angle <- function(x,y){
   # theta <- acos(dot.prod / (norm.x * norm.y))
   # as.numeric(theta)
   dot.prod <- as.numeric(x%*%y )
-  norm.x <- norm(x,type="2")
-  norm.y <- norm(y,type="2")
-  atheta<-dot.prod / (norm.x * norm.y)
+  norm.x <- norm(x,type="2") #perform singular value decomposition
+  norm.y <- norm(y,type="2") #perform singular value decomposition
+  atheta <- dot.prod / (norm.x * norm.y)
   theta <- acos(pmin(pmax(atheta,-1.0),1.0))
   as.numeric(theta)
-  
 }
 ##
-
+##Unique pairs function
 unique.pairs <- function(v){
   # v = a vector of group names to be paired
   
@@ -28,7 +27,7 @@ unique.pairs <- function(v){
   temp.v <- lapply(n_v, FUN = function(x) (x+1):n)
   unique.v <- temp.v[-n]
 }
-
+##
 
 ##Function to statistically test pairwise angular comparisons between sets of group major axes##
 MA_angular_comp <- function(groups, Transformed.MA_list, resampled_transformed.ma_list, MA_number = 1){
@@ -178,7 +177,7 @@ MA_angular_comp <- function(groups, Transformed.MA_list, resampled_transformed.m
 ##Function to statistically test pairwise angular comparisons between sets of group major axes##
 posthoc_MASA_comp <- function(MASA_result, Comp_MASA_result, group_list, MA_number = 1){
   # ConfIntList =
-  ##Load in variabless
+  ##Load in variables
   MASA_result <- MASA_result
   Comp_MASA_result <- Comp_MASA_result
   
