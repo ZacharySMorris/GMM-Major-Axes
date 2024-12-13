@@ -54,6 +54,8 @@ MA_angular_comp <- function(groups, Transformed.MA_list, resampled_transformed.m
   Angular_Diff_Table <- matrix(data = NA , nrow = length(groups), ncol = length(groups), dimnames=(list(groups,groups)))
   Angular_P_Table <- matrix(data = NA , nrow = length(groups), ncol = length(groups), dimnames=(list(groups,groups)))
   Results_Table <- matrix(data = NA , nrow = length(groups), ncol = length(groups), dimnames=(list(groups,groups)))
+  
+  Angular_P_TableOG <- matrix(data = NA , nrow = length(groups), ncol = length(groups), dimnames=(list(groups,groups)))
   ##
   
   ##Create indeces for lower triagonal, upper triagonal, and diagonals
@@ -149,9 +151,11 @@ MA_angular_comp <- function(groups, Transformed.MA_list, resampled_transformed.m
       # normality_tests[paste(temp_group, "&", temp_comp_group, "variance of angular differences", sep = " ")] <- shapiro.test(temp_angular_var)[[2]]
       
       temp_angular_P_val <- sum(temp_measured_angle < abs(temp_angular_var)) / length(temp_angular_var)
+      temp_angular_P_valOG <- sum(temp_measured_angle < abs(temp_resampled_angles)) / length(temp_resampled_angles)
       
       Angular_Diff_Table[temp_comp_n,i] <- temp_measured_angle
       Angular_P_Table[i,temp_comp_n] <- temp_angular_P_val
+      Angular_P_TableOG[i,temp_comp_n] <- temp_angular_P_valOG
       
       # # add values to correct cells across arrays
       # Angular_Diff_Table[temp_comp_n,i,] <- temp_measured_angle
