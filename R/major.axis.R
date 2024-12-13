@@ -309,7 +309,7 @@ for (i in 1:length(groups)){
 
   polygon(c(rev(temp_xpreds), temp_xpreds),
           c(rev(temp_upperpreds), temp_lowerpreds),
-          col = alpha('grey',0.6), border = NA)
+          col = scales::alpha('grey',0.6), border = NA)
 
   clip(
     min(temp_xpreds),
