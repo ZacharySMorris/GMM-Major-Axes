@@ -283,6 +283,11 @@ for (i in 1:length(groups)){
   temp_group <- groups[i]
   temp_PCs <- PCData[[temp_group]][,PCs]
   group_mean <- apply(temp_PCs,2,"mean")
+  
+  if(is.nan(group_mean)){
+    warning(paste("The", temp_group, "group has no PC data and has been skipped.", sep = " "))
+    next
+  }
 
   temp_slope <- Slopes_obj$Slopes[[temp_group]][PCn,"Slope"]
   temp_int <- Slopes_obj$Intercepts[[temp_group]][[PCn]]
