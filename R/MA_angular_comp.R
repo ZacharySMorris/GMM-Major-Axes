@@ -170,7 +170,8 @@ MA_angular_comp <- function(groups, Transformed.MA_list, resampled_transformed.m
   
   out <- list(Angles =Angular_Diff_Table,
               P_values = Angular_P_Table,
-              Results = Results_Table)
+              Results = Results_Table,
+              Angular_P_TableOG = Angular_P_TableOG)
   # normality_tests = normality_tests
   
   out
@@ -303,19 +304,25 @@ posthoc_MASA_comp <- function(MASA_result, Comp_MASA_result, group_list, MA_numb
         
         temp_resampled_angles <- append(temp_resampled_angles,temp_X_angle,temp_Y_angle)
       }
-      temp_angular_var <- temp_resampled_angles
+      temp_angular_varOG <- temp_resampled_angles
+      temp_angular_var <- temp_resampled_angles - mean(temp_resampled_angles)
       # ##
       
       # normality_tests[paste(temp_group, "&", temp_comp_group, "variance of angular differences", sep = " ")] <- shapiro.test(temp_angular_var)[[2]]
       
+      temp_angular_P_valOG <- sum(temp_measured_angle < abs(temp_angular_varOG)) / length(temp_angular_varOG)
       temp_angular_P_val <- sum(temp_measured_angle < abs(temp_angular_var)) / length(temp_angular_var)
+      
       
       Angular_Diff_Table[i,j] <- temp_measured_angle
       Angular_P_Table[i,j] <- temp_angular_P_val
+      Angular_P_TableOG[i,j] <- temp_angular_P_valOG
     }
   }
   Adjusted_P_Table <- Angular_P_Table
   Adjusted_P_Table[1:length(groups),] <- p.adjust(Angular_P_Table)
+  Adjusted_P_TableOG <- Angular_P_TableOG
+  Adjusted_P_TableOG[1:length(groups),] <- p.adjust(Adjusted_P_TableOG)
   
   # Results_Table[lower.tri(Results_Table)] <- Angular_Diff_Table[lower.tri(Results_Table)]
   # Results_Table[upper.tri(Results_Table)] <- p.adjust(Angular_P_Table[upper.tri(Results_Table)], n=n_comp)
@@ -323,7 +330,10 @@ posthoc_MASA_comp <- function(MASA_result, Comp_MASA_result, group_list, MA_numb
   
   out <- list(Angular_Differences = Angular_Diff_Table,
               P_values = Angular_P_Table,
-              Adj_P_values = Adjusted_P_Table)
+              Adj_P_values = Adjusted_P_Table,
+              P_valuesOG = Angular_P_TableOG,
+              Adj_P_valuesOG = Adjusted_P_TableOG
+              )
   # normality_tests = normality_tests
   
   out
