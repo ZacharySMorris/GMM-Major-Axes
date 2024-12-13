@@ -867,7 +867,7 @@ Major.Axis.RRPP <- function(classifier, PCData, group_factor, PCs = c(1:4), PC_c
   results_diagonal <- as.logical(diag(nrow(Results_Table)))
   #
   
-  lm_df <<- RRPP::rrpp.data.frame(data = PCData$x[,PCs], grouping = classifier[,group_factor])
+  lm_df <<- RRPP::rrpp.data.frame(data = PCData$x[PCs], grouping = classifier[,group_factor])
   # lm_model <<- RRPP::lm.rrpp(lm_df$data[,-1] ~ lm_df$data[,1] * lm_df$grouping, data=lm_df)
   # pair_comp <- summary(pairwise(lm_model, covariate = PCData$x[,1], groups=PCData$classifier), test.type = anova_type)
   lm_model <<- RRPP::lm.rrpp(lm_df$data ~ lm_df$grouping, data=lm_df)
@@ -924,7 +924,7 @@ posthoc.major.axis.RRPP <- function(X, Y, Xgroups = NULL,Ygroups = NULL, PCs = c
   results_Ycomp <- match(Ygroups,colnames(Results_Table))
   ##
   ## create lm model, perform anova, and extract pairwise comparisons
-  lm_df <<- RRPP::rrpp.data.frame(data = PCData$x[,PCs], grouping = PCData$classifier)
+  lm_df <<- RRPP::rrpp.data.frame(data = PCData$x[PCs], grouping = PCData$classifier)
   # lm_model <<- RRPP::lm.rrpp(lm_df$data[,-1] ~ lm_df$data[,1] * lm_df$grouping, data=lm_df)
   # pair_comp <- summary(pairwise(lm_model, covariate = PCData$x[,1], groups=PCData$classifier), test.type = anova_type)
   lm_model <<- RRPP::lm.rrpp(lm_df$data ~ lm_df$grouping, data=lm_df)
