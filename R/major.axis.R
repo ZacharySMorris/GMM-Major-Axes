@@ -268,8 +268,8 @@ major.axis.slopes <- function(resampled.major.axis, MA_number = 1, PC_comp = 1){
 plot.major.axis <- function(Slopes_obj,PCData,Axes_data,PCs){
 
 Slopes_obj <- Slopes_obj
-groups <- Slopes_obj$slopes
 PCData <- PCData
+groups <- names(PCData)
 Axes_data <- Axes_data
 PCs <- PCs
 PCn <- paste("Comp", PCs[[2]], sep = "")
@@ -284,12 +284,11 @@ for (i in 1:length(groups)){
   temp_PCs <- PCData[[temp_group]][,PCs]
   group_mean <- apply(temp_PCs,2,"mean")
 
-  temp_obj <- Slopes_obj[[temp_group]]
-  temp_slope <- temp_obj$Slope_Table[[temp_group]][PCn,"Slope"]
-  temp_int <- temp_obj$Intercepts[[temp_group]][[PCn]]
-  temp_upperpreds <- temp_obj$Upper_CI_Values[[temp_group]][[PCn]]
-  temp_lowerpreds <- temp_obj$Lower_CI_Values[[temp_group]][[PCn]]
-  temp_xpreds <- temp_obj$XPreds
+  temp_slope <- Slopes_obj$Slopes[[temp_group]][PCn,"Slope"]
+  temp_int <- Slopes_obj$Intercepts[[temp_group]][[PCn]]
+  temp_upperpreds <- Slopes_obj$Upper_CI_Values[[temp_group]][[PCn]]
+  temp_lowerpreds <- Slopes_obj$Lower_CI_Values[[temp_group]][[PCn]]
+  temp_xpreds <- Slopes_obj$X_Values
 
   plot(0, 0, type = "n",
        xlim = Xlim,
