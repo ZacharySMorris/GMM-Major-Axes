@@ -369,8 +369,7 @@ major.axis.lm <- function(group, transformed.ma, resampled_transformed.ma, MA_nu
   temp_int <- temp_lm$coefficients[1,]
 
   temp_x <- seq(min(temp_ma[,PC_comp]),max(temp_ma[,PC_comp]), length.out = 50)
-  temp_preds <- (temp_slope*temp_x) + temp_int
-
+  # temp_preds <- (temp_slope%*%temp_x) + temp_int
 
   temp_resampled_ma <- lapply(resampled_transformed.major.axis, function(x) x[ma_rows,]) # select correct rows from all resampled matrices
   temp_resampled_lm <- resample.lm(temp_resampled_ma,PC_comp)
