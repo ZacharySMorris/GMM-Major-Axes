@@ -278,33 +278,32 @@ posthoc_MASA_comp <- function(MASA_result, Comp_MASA_result, group_list, MA_numb
       temp_resampled_angles <- c()
       
       ##code for intergroup comparions, with subtracted mean##
-      # for (k in 1:nrow(resampled_Y_MA)){
-      #   temp_X_MA <- resampled_X_MA[k,]
-      #   temp_Y_MA <- resampled_Y_MA[k,]
-      #
-      #   temp_angle <- angle(temp_X_MA,temp_Y_MA)
-      #
-      #   temp_resampled_angles <- append(temp_resampled_angles,temp_angle)
-      # }
-      # temp_angular_var <- temp_resampled_angles - mean(temp_resampled_angles)
-      ##
-      #code for intragroup comparions without mean subtraction##
-      shuffled_X_MA <- resampled_X_MA[sample(nrow(resampled_X_MA)),]
-      shuffled_Y_MA <- resampled_Y_MA[sample(nrow(resampled_Y_MA)),]
       for (k in 1:nrow(resampled_Y_MA)){
         temp_X_MA <- resampled_X_MA[k,]
-        temp_shuffled_X_MA <- shuffled_X_MA[k,]
         temp_Y_MA <- resampled_Y_MA[k,]
-        temp_shuffled_Y_MA <- shuffled_Y_MA[k,]
-        
-        comp_X_PC_n <- min(length(temp_X_MA), length(temp_shuffled_X_MA))
-        comp_Y_PC_n <- min(length(temp_Y_MA), length(temp_shuffled_Y_MA))
-        
-        temp_X_angle <- angle(t(temp_X_MA[1:comp_X_PC_n]),temp_shuffled_X_MA[1:comp_X_PC_n])
-        temp_Y_angle <- angle(t(temp_Y_MA[1:comp_Y_PC_n]),temp_shuffled_Y_MA[1:comp_Y_PC_n])
-        
-        temp_resampled_angles <- append(temp_resampled_angles,temp_X_angle,temp_Y_angle)
+
+        temp_angle <- angle(temp_X_MA,temp_Y_MA)
+
+        temp_resampled_angles <- append(temp_resampled_angles,temp_angle)
       }
+      ##
+      #code for intragroup comparions without mean subtraction##
+      # shuffled_X_MA <- resampled_X_MA[sample(nrow(resampled_X_MA)),]
+      # shuffled_Y_MA <- resampled_Y_MA[sample(nrow(resampled_Y_MA)),]
+      # for (k in 1:nrow(resampled_Y_MA)){
+      #   temp_X_MA <- resampled_X_MA[k,]
+      #   temp_shuffled_X_MA <- shuffled_X_MA[k,]
+      #   temp_Y_MA <- resampled_Y_MA[k,]
+      #   temp_shuffled_Y_MA <- shuffled_Y_MA[k,]
+      #   
+      #   comp_X_PC_n <- min(length(temp_X_MA), length(temp_shuffled_X_MA))
+      #   comp_Y_PC_n <- min(length(temp_Y_MA), length(temp_shuffled_Y_MA))
+      #   
+      #   temp_X_angle <- angle(t(temp_X_MA[1:comp_X_PC_n]),temp_shuffled_X_MA[1:comp_X_PC_n])
+      #   temp_Y_angle <- angle(t(temp_Y_MA[1:comp_Y_PC_n]),temp_shuffled_Y_MA[1:comp_Y_PC_n])
+      #   
+      #   temp_resampled_angles <- append(temp_resampled_angles,temp_X_angle,temp_Y_angle)
+      # }
       temp_angular_varOG <- temp_resampled_angles
       temp_angular_var <- temp_resampled_angles - mean(temp_resampled_angles)
       # ##
