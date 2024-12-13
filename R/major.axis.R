@@ -288,7 +288,7 @@ for (i in 1:length(groups)){
   temp_int <- Slopes_obj$Intercepts[[temp_group]][[PCn]]
   temp_upperpreds <- Slopes_obj$Upper_CI_Values[[temp_group]][[PCn]]
   temp_lowerpreds <- Slopes_obj$Lower_CI_Values[[temp_group]][[PCn]]
-  temp_xpreds <- Slopes_obj$X_Values
+  temp_xpreds <- Slopes_obj$X_Values[[temp_group]]
 
   plot(0, 0, type = "n",
        xlim = Xlim,
