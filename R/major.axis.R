@@ -284,7 +284,7 @@ for (i in 1:length(groups)){
   temp_PCs <- PCData[[temp_group]][,PCs]
   group_mean <- apply(temp_PCs,2,"mean")
   
-  if(is.nan(group_mean)){
+  if(any(is.nan(group_mean))){
     warning(paste("The", temp_group, "group has no PC data and has been skipped.", sep = " "))
     next
   }
