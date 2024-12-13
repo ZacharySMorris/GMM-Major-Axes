@@ -238,24 +238,28 @@ resample.major.axis <- function(X, PCs = c(1:4), MA_number = 1, method = c("boot
 ###
 
 ### Major Axis Slope Calculation ###
-major.axis.slopes <- function(resampled.major.axis){
+major.axis.slopes <- function(resampled.major.axis, MA_number = 1, PC_comp = 1){
   temp_slopes <- list()
   temp_ints <- list()
   temp_upper_preds <- list()
   temp_lower_preds <- list()
+  temp_xpreds <- list()
   for (i in 1:length(resampled.major.axis$groups)){
     temp_group <- resampled.major.axis$groups[[i]]
     temp_out <- major.axis.lm(temp_group,
                               resampled.major.axis$Transformed.MA[[i]],
                               resampled.major.axis$resampled_transformed.MA[[i]],
-                              MA_number = 1, PC_comp = 1)
+                              MA_number = MA_number, PC_comp = PC_comp)
     temp_slopes[[temp_group]] <- temp_out$Slope_Table
     temp_ints[[temp_group]] <- temp_out$Intercepts
     temp_upper_preds[[temp_group]] <- temp_out$UpperPreds
     temp_lower_preds[[temp_group]] <- temp_out$LowerPreds
+    temp_xpreds[[temp_group]] <- temp_out$XPreds
+    
   }
   out <- list(Slopes = temp_slopes, Intercepts = temp_ints,
-              Upper_CI_Values = temp_upper_preds, Lower_CI_Values = temp_lower_preds)
+              Upper_CI_Values = temp_upper_preds, Lower_CI_Values = temp_lower_preds,
+              X_Values = temp_xpreds)
   out
 }
 ###
@@ -264,6 +268,7 @@ major.axis.slopes <- function(resampled.major.axis){
 plot.major.axis <- function(Slopes_obj,PCData,Axes_data,PCs){
 
 Slopes_obj <- Slopes_obj
+groups <- Slopes_obj$slopes
 PCData <- PCData
 Axes_data <- Axes_data
 PCs <- PCs
@@ -274,23 +279,17 @@ Xlim<-c(floor(min(Axes_data$x[,PCs[[1]]])*10)/10,ceiling(max(Axes_data$x[,PCs[[1
 Ylim<-c(floor(min(Axes_data$x[,PCs[[2]]])*10)/10,ceiling(max(Axes_data$x[,PCs[[2]]])*10)/10)
 
 
-for (i in 1:length(Slopes_obj)){
-  temp_group <- names(Slopes_obj)[i]
+for (i in 1:length(groups)){
+  temp_group <- groups[i]
   temp_PCs <- PCData[[temp_group]][,PCs]
   group_mean <- apply(temp_PCs,2,"mean")
 
   temp_obj <- Slopes_obj[[temp_group]]
-  temp_slope <- temp_obj$Slope_Table[PCn,"Slope"]
-  temp_int <- temp_obj$Intercepts[[PCn]]
-  temp_upperpreds <- temp_obj$UpperPreds[[PCn]]
-  temp_lowerpreds <- temp_obj$LowerPreds[[PCn]]
+  temp_slope <- temp_obj$Slope_Table[[temp_group]][PCn,"Slope"]
+  temp_int <- temp_obj$Intercepts[[temp_group]][[PCn]]
+  temp_upperpreds <- temp_obj$Upper_CI_Values[[temp_group]][[PCn]]
+  temp_lowerpreds <- temp_obj$Lower_CI_Values[[temp_group]][[PCn]]
   temp_xpreds <- temp_obj$XPreds
-
-  # temp_CI <- Slope_table[PCn,"95%CI"]
-  # upper_CI <- temp_slope + temp_CI
-  # lower_CI <- temp_slope - temp_CI
-  #
-  # temp_int <- group_mean[2] - c(temp_slope*group_mean[1])
 
   plot(0, 0, type = "n",
        xlim = Xlim,
