@@ -17,7 +17,7 @@ MA.r.squared <- function(Pmatrix, MA_number = 1){
 }
 
 ### Function to perform Pmatrix calculation from PC scores ###
-major.axis.pca  <- function(pc.scores){
+major.axis.pca <- function(pc.scores){
 
   pc.scores <- pc.scores
   N_comp <- min(c(nrow(pc.scores)-1), ncol(pc.scores))
