@@ -56,6 +56,7 @@ MA_angular_comp <- function(groups, Transformed.MA_list, resampled_transformed.m
   Results_Table <- matrix(data = NA , nrow = length(groups), ncol = length(groups), dimnames=(list(groups,groups)))
   
   Angular_P_TableOG <- matrix(data = NA , nrow = length(groups), ncol = length(groups), dimnames=(list(groups,groups)))
+  Angular_Z_P_Table <- matrix(data = NA , nrow = length(groups), ncol = length(groups), dimnames=(list(groups,groups)))
   ##
   
   ##Create indeces for lower triagonal, upper triagonal, and diagonals
@@ -129,7 +130,7 @@ MA_angular_comp <- function(groups, Transformed.MA_list, resampled_transformed.m
         
         temp_resampled_angles <- append(temp_resampled_angles,temp_angle)
       }
-      temp_angular_var <- temp_resampled_angles - mean(temp_resampled_angles)
+      temp_angular_var <- sum((temp_resampled_angles - mean(temp_resampled_angles))^2)
       ##
       #code for intragroup comparions without mean subtraction##
       # shuffled_X_MA <- resampled_X_MA[sample(nrow(resampled_X_MA)),]
@@ -146,16 +147,30 @@ MA_angular_comp <- function(groups, Transformed.MA_list, resampled_transformed.m
       #   temp_resampled_angles <- append(temp_resampled_angles,temp_X_angle,temp_Y_angle)
       # }
       # temp_angular_var <- temp_resampled_angles
+      # 
+      #   btw_resampled_angles <- append(btw_resampled_angles,temp_X_angle,temp_Y_angle)
+      #   wtn_resampled_angles <- append(wtn_resampled_angles,temp_X_angle,temp_Y_angle)
+      # }
+      #   btw_var <- sum((btw_resampled_angles - mean(btw_resampled_angles))^2)
+      #   MSB <- (btw_var / (length(wtn_resampled_angles) - 2))
+      #   wtn_var <- sum((wtn_resampled_angles - mean(wtn_resampled_angles))^2)
+      #   MSE <- (wtn_var / (length(wtn_resampled_angles) - 2))
       # ##
       
       # normality_tests[paste(temp_group, "&", temp_comp_group, "variance of angular differences", sep = " ")] <- shapiro.test(temp_angular_var)[[2]]
       
+      z.dist <- temp_resampled_angles - mean(temp_resampled_angles) / sd(temp_resampled_angles)
+      z.score <- temp_measured_angle - mean(temp_resampled_angles) / sd(temp_resampled_angles)
+      
       temp_angular_P_val <- sum(temp_measured_angle < abs(temp_angular_var)) / length(temp_angular_var)
       temp_angular_P_valOG <- sum(temp_measured_angle < abs(temp_resampled_angles)) / length(temp_resampled_angles)
+      temp_z_P_val <- sum(z.score < abs(z.dist)) / length(z.dist)
+      
       
       Angular_Diff_Table[temp_comp_n,i] <- temp_measured_angle
       Angular_P_Table[i,temp_comp_n] <- temp_angular_P_val
       Angular_P_TableOG[i,temp_comp_n] <- temp_angular_P_valOG
+      Angular_Z_P_Table[i,temp_comp_n] <- temp_z_P_val
       
       # # add values to correct cells across arrays
       # Angular_Diff_Table[temp_comp_n,i,] <- temp_measured_angle
@@ -171,7 +186,8 @@ MA_angular_comp <- function(groups, Transformed.MA_list, resampled_transformed.m
   out <- list(Angles =Angular_Diff_Table,
               P_values = Angular_P_Table,
               Results = Results_Table,
-              Angular_P_TableOG = Angular_P_TableOG)
+              Angular_P_TableOG = Angular_P_TableOG,
+              Angular_Z_P_Table = Angular_Z_P_Table)
   # normality_tests = normality_tests
   
   out
